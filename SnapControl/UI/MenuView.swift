@@ -80,7 +80,7 @@ struct StatusModule: View {
                 Spacer()
                 Toggle("Snapping", isOn: Binding(get: { model.active != nil }, set: { model.setEnabled($0) }))
                     .labelsHidden()
-                    .toggleStyle(.switch)
+                    .toggleStyle(.setting)
                     .controlSize(.small)
                     .help(model.active == nil ? "Turn on the last used grid" : "Turn off the grid")
             }
@@ -145,6 +145,7 @@ struct GridRow: View {
         .contentShape(Rectangle())
         .onHover { hover = $0 }
         .onTapGesture { model.toggle(grid) }
+        .demoTarget(grid.demoID)
         .help(active ? "Turn off this grid" : "Use this grid")
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)

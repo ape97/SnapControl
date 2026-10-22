@@ -214,13 +214,14 @@ final class AppModel {
 
     /// For snapshots and the performance test: set up state as if the menu had been open for a few seconds.
     func prepareSnapshot() {
-        let off = Runtime.arguments.contains("--off")
-        active = off ? nil : sets.first { $0.isEqual && $0.columns == 3 && $0.rows == 3 }
         // Show a custom split in the list (in memory only, not saved)
         if !sets.contains(where: { !$0.isEqual }) {
             sets.append(GridSet(name: "Top Three", columns: 3, rows: 2, split: .rows,
                                 strips: [Strip(size: 1, count: 3), Strip(size: 2, count: 3)]))
         }
+        // `--grid 2x2` (or `--grid custom`) picks the active grid by its demo target id; 3 × 3 otherwise.
+        let grid = Runtime.value(after: "--grid") ?? "3x3"
+        active = Runtime.arguments.contains("--off") ? nil : sets.first { $0.demoID == grid }
         isTrusted = !Runtime.arguments.contains("--untrusted")
     }
 

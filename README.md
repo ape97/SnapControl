@@ -1,19 +1,32 @@
-# Snap Control
+<p align="center">
+  <img src="docs/images/icon.png" alt="Snap Control icon" width="128">
+</p>
 
-[![macOS 26+](https://img.shields.io/badge/macOS-26%2B-black?logo=apple)](#requirements)
-[![Swift](https://img.shields.io/badge/Swift-SwiftUI-orange?logo=swift)](docs/DEVELOPMENT.md)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
-[![AI-assisted](https://img.shields.io/badge/built%20with-AI%20assistance-8A2BE2)](#ai-assisted-development)
+<h1 align="center">Snap Control</h1>
 
-A menu bar app that splits your display into zones and snaps dragged windows into them.
+<p align="center">A menu bar app that splits your display into zones and snaps dragged windows into them.</p>
 
 <p align="center">
-  <img src="docs/images/main-dark.png" alt="Snap Control menu (dark)" width="400">
-  <img src="docs/images/main-light.png" alt="Snap Control menu (light)" width="400">
+  <a href="#requirements"><img src="https://img.shields.io/badge/macOS-26%2B-black?logo=apple" alt="macOS 26+"></a>
+  <a href="docs/DEVELOPMENT.md"><img src="https://img.shields.io/badge/Swift-SwiftUI-orange?logo=swift" alt="Swift"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License: MIT"></a>
+  <a href="#ai-assisted-development"><img src="https://img.shields.io/badge/built%20with-AI%20assistance-8A2BE2" alt="AI-assisted"></a>
 </p>
 
 > [!NOTE]
 > This app was developed with AI assistance. See [AI-assisted development](#ai-assisted-development).
+
+## In action
+
+### Snapping windows
+
+<p align="center">
+  <img src="docs/images/snap.gif" alt="Choosing a 2 × 2 grid, dragging windows into zones, then switching to 3 × 3" width="720">
+</p>
+
+Pick a grid in the menu, hold Control while dragging a window and release it over a zone. Switch from 2 × 2 to 3 × 3 at any time; the zones follow the active grid.
+
+<sub>The animations are rendered by the app itself from invented demo data; nothing on your Mac is recorded.</sub>
 
 ## Features
 
@@ -25,9 +38,14 @@ A menu bar app that splits your display into zones and snaps dragged windows int
 
 ## Screenshots
 
+<p align="center">
+  <img src="docs/images/main-dark.png" alt="Snap Control menu (dark)" width="400">
+  <img src="docs/images/main-light.png" alt="Snap Control menu (light)" width="400">
+</p>
+
 <table>
   <tr>
-    <td align="center"><img src="docs/images/off-dark.png" width="360"><br>Grid off, with the Accessibility prompt</td>
+    <td align="center"><img src="docs/images/off-dark.png" width="360"><br>Grid off: snapping paused, saved grids kept</td>
     <td align="center"><img src="docs/images/settings-dark.png" width="360"><br>Settings: grid list, snap key, Accessibility, login</td>
   </tr>
   <tr>

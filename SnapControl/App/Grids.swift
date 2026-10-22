@@ -39,6 +39,8 @@ struct GridSet: Codable, Identifiable, Hashable {
     ]
 
     var isEqual: Bool { strips == nil }
+    /// Short id for snapshots and their scene targets: "2x2" for an even grid, "custom" for a custom layout.
+    var demoID: String { isEqual ? "\(columns)x\(rows)" : "custom" }
 
     /// Layout in order; an even grid is `rows` equally tall rows with `columns` windows each.
     var layout: (split: Split, strips: [Strip]) {
