@@ -62,6 +62,19 @@ struct SettingsPage: View {
 
             Module {
                 HStack {
+                    SettingLabel(symbol: "arrow.up.left.and.arrow.down.right", title: "Fill Screen at Top", tint: .orange)
+                    Spacer()
+                    Toggle("Fill Screen at Top", isOn: Binding(get: { model.fillAtTop }, set: { model.setFillAtTop($0) }))
+                        .labelsHidden()
+                        .toggleStyle(.setting)
+                        .controlSize(.small)
+                        .help("Dragging a window to the middle of the top edge fills the whole screen")
+                }
+                SettingNote("Drag a window to the middle of the top edge and release to fill the whole screen, with any grid and without the snap key.")
+            }
+
+            Module {
+                HStack {
                     SettingLabel(symbol: "power", title: "Open at Login", tint: .green)
                     Spacer()
                     Toggle("Open at Login", isOn: Binding(get: { launchAtLogin }, set: { LoginItem.set($0); launchAtLogin = LoginItem.isEnabled }))

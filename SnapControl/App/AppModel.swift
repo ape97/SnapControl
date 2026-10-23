@@ -21,6 +21,8 @@ final class AppModel {
     /// Active grid (a saved set or a custom, unsaved one); nil = off.
     private(set) var active: GridSet?
     private(set) var snapKey: SnapKey
+    /// Dragging a window to the top edge offers the whole screen, whichever grid is active.
+    private(set) var fillAtTop: Bool
     /// Accessibility permission granted – without it, other apps' windows cannot be moved.
     private(set) var isTrusted = WindowAX.isTrusted
 
@@ -44,6 +46,7 @@ final class AppModel {
         sets = store.loadSets()
         active = store.loadActive()
         snapKey = store.key
+        fillAtTop = store.fillAtTop
         if !Runtime.headless {
             observeMenu()
             observeTrust()
@@ -88,7 +91,7 @@ final class AppModel {
         Snapper.shared.stop()
         if let active {
             tiling.disable()
-            Snapper.shared.start(grid: active, key: snapKey)
+            Snapper.shared.start(grid: active, key: snapKey, fillAtTop: fillAtTop)
         } else {
             tiling.restore()
         }
@@ -140,6 +143,12 @@ final class AppModel {
     func setSnapKey(_ key: SnapKey) {
         snapKey = key
         store.key = key
+        restartSnapper()
+    }
+
+    func setFillAtTop(_ on: Bool) {
+        fillAtTop = on
+        store.fillAtTop = on
         restartSnapper()
     }
 
@@ -223,6 +232,7 @@ final class AppModel {
         let grid = Runtime.value(after: "--grid") ?? "3x3"
         active = Runtime.arguments.contains("--off") ? nil : sets.first { $0.demoID == grid }
         isTrusted = !Runtime.arguments.contains("--untrusted")
+        fillAtTop = true   // shown switched on (in memory only)
     }
 
     /// Performance test: exactly one update as with the menu open (e.g. a tick with new values).

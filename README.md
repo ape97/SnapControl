@@ -26,6 +26,14 @@
 
 Pick a grid in the menu, hold Control while dragging a window and release it over a zone. Switch from 2 × 2 to 3 × 3 at any time; the zones follow the active grid.
 
+### Fill the screen from the top edge
+
+<p align="center">
+  <img src="docs/images/fill.gif" alt="Dragging a window to the middle of the top edge lights up the whole screen; releasing fills it" width="720">
+</p>
+
+With **Fill Screen at Top** switched on (Settings), dragging a window to the middle of the top edge offers the whole usable screen, whichever grid is active, like the macOS behavior that Snap Control otherwise switches off. No snap key needed.
+
 <sub>The animations are rendered by the app itself from invented demo data; nothing on your Mac is recorded.</sub>
 
 ## Features
@@ -33,6 +41,7 @@ Pick a grid in the menu, hold Control while dragging a window and release it ove
 - **Saved grids**: named sets; defaults are 2 × 2, 4 × 2, 3 × 3 and 4 × 4, each with 1–8 columns and rows.
 - **Custom layouts**: instead of an equal grid, split into rows (top to bottom) or columns (left to right). Each strip has a size (1×–4×, its share of the height or width) and 1–8 windows, up to 6 strips. Example: 3 small windows on top and 3 large ones below.
 - **Snap by dragging**: drag a window and hold the key, and all zones of the active grid appear in the accent color with the zone under the pointer highlighted. Release the mouse and the window fills exactly that zone (per display, excluding menu bar and Dock).
+- **Fill Screen at Top** (optional, off by default): drag a window to the middle of the top edge (outer 15 % on each side excluded) and release to fill the whole usable screen, with any grid and without the snap key.
 - **Your key**: Control (default), Option, Command or Shift.
 - **No clash with macOS**: while a grid is active, the built-in macOS window snapping is switched off, because it intercepts the Option key. The previous values are saved and restored when you switch the grid off or quit.
 
@@ -46,7 +55,7 @@ Pick a grid in the menu, hold Control while dragging a window and release it ove
 <table>
   <tr>
     <td align="center"><img src="docs/images/off-dark.png" width="360"><br>Grid off: snapping paused, saved grids kept</td>
-    <td align="center"><img src="docs/images/settings-dark.png" width="360"><br>Settings: grid list, snap key, Accessibility, login</td>
+    <td align="center"><img src="docs/images/settings-dark.png" width="360"><br>Settings: grid list, snap key, Accessibility, Fill Screen at Top, login</td>
   </tr>
   <tr>
     <td align="center"><img src="docs/images/editor-dark.png" width="360"><br>Editor: equal grid with columns and rows</td>
@@ -74,7 +83,7 @@ To uninstall, switch the active grid off (this restores the macOS snapping value
 
 - Click the menu bar item and pick a grid from **Saved Grids** to activate it; click the active grid again to switch it off.
 - With a grid active, drag a window, hold the snap key (Control by default), move the pointer over a zone and release the mouse.
-- Settings (gear icon): edit, reorder and add grids, choose the snap key, check the Accessibility permission and **Open at Login**.
+- Settings (gear icon): edit, reorder and add grids, choose the snap key, check the Accessibility permission, switch on **Fill Screen at Top** and **Open at Login**.
 
 ## Build from source
 

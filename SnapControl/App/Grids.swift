@@ -159,6 +159,24 @@ enum SnapKey: String, Codable, CaseIterable {
     var title: String { "\(symbol) \(rawValue.capitalized)" }
 }
 
+/// The "fill the screen" strip at the top edge, like the built-in macOS behavior that Snap Control switches off.
+/// Pure geometry, so the self-test can check it without AppKit state.
+enum TopFill {
+    /// Depth of the strip below the top edge of the usable area. The pointer of a dragged window usually rests on the
+    /// menu bar itself (the screen stops it at its top edge), so the strip reaches up to the screen edge and the
+    /// 8 pt below the menu bar only forgive a slightly short throw; deeper would collide with ordinary title bar drags.
+    static let band: CGFloat = 8
+    /// Share of the width kept free on each side, so the top corners stay available for the zones next to them.
+    static let side: CGFloat = 0.15
+
+    /// True if `point` (Cocoa coordinates) lies in the strip of `visible` (the screen minus menu bar and Dock).
+    static func contains(_ point: CGPoint, in visible: CGRect, enabled: Bool) -> Bool {
+        guard enabled, !visible.isEmpty else { return false }
+        let inset = visible.width * side
+        return point.y >= visible.maxY - band && point.x >= visible.minX + inset && point.x <= visible.maxX - inset
+    }
+}
+
 /// Sets, active grid and key in UserDefaults (JSON). If the list is missing or unreadable, the defaults apply.
 struct GridStore {
     var defaults: UserDefaults
@@ -197,6 +215,12 @@ struct GridStore {
     var key: SnapKey {
         get { defaults.string(forKey: "snapKey").flatMap(SnapKey.init) ?? .control }
         nonmutating set { defaults.set(newValue.rawValue, forKey: "snapKey") }
+    }
+
+    /// Offer the whole usable screen when a window is dragged to the top edge (off by default).
+    var fillAtTop: Bool {
+        get { defaults.bool(forKey: "fillAtTop") }
+        nonmutating set { defaults.set(newValue, forKey: "fillAtTop") }
     }
 
     /// Saved macOS values for the built-in snapping (nil = nothing switched off). See `MacTiling`.

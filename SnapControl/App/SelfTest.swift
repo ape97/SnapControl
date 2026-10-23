@@ -85,6 +85,22 @@ enum SelfTest {
         expect(Zones.frames(asRows, in: area) == Zones.frames(GridSet(name: "t", columns: 4, rows: 3), in: area),
                "equal rows layout matches 4×3 grid")
 
+        // Top edge: whole screen only in the middle strip, never with the setting off.
+        let tf0 = CGRect(x: 0, y: 25, width: 1512, height: 919)   // maxY = 944
+        expect(TopFill.contains(CGPoint(x: 756, y: 944), in: tf0, enabled: true), "top fill: middle at the edge")
+        expect(TopFill.contains(CGPoint(x: 756, y: 982), in: tf0, enabled: true), "top fill: middle in the menu bar")
+        expect(TopFill.contains(CGPoint(x: 756, y: 944 - TopFill.band), in: tf0, enabled: true), "top fill: band bottom edge")
+        expect(!TopFill.contains(CGPoint(x: 756, y: 944 - TopFill.band - 1), in: tf0, enabled: true), "top fill: just below the band")
+        expect(!TopFill.contains(CGPoint(x: 756, y: 800), in: tf0, enabled: true), "top fill: deeper in the screen")
+        expect(!TopFill.contains(CGPoint(x: 10, y: 944), in: tf0, enabled: true), "top fill: top left corner")
+        expect(!TopFill.contains(CGPoint(x: 1500, y: 960), in: tf0, enabled: true), "top fill: top right corner")
+        expect(TopFill.contains(CGPoint(x: 1512 * 0.15, y: 944), in: tf0, enabled: true), "top fill: inner side boundary")
+        expect(!TopFill.contains(CGPoint(x: 1512 * 0.15 - 1, y: 944), in: tf0, enabled: true), "top fill: just inside the corner")
+        expect(!TopFill.contains(CGPoint(x: 756, y: 944), in: tf0, enabled: false), "top fill: off never triggers")
+        let second = CGRect(x: 1512, y: -300, width: 1920, height: 1055)   // display to the right, shifted
+        expect(TopFill.contains(CGPoint(x: 1512 + 960, y: 755), in: second, enabled: true), "top fill: second display")
+        expect(!TopFill.contains(CGPoint(x: 756, y: 944), in: second, enabled: true), "top fill: other display's strip")
+
         // Storage: own test domain, never the user's list.
         let store = GridStore(defaults: AppModel.scratchDefaults())
         expect(store.loadSets() == GridSet.defaults, "empty store → defaults")
@@ -112,6 +128,9 @@ enum SelfTest {
         expect(store.loadActive() == nil, "deactivate clears active")
         store.key = .option
         expect(store.key == .option, "snap key round trip")
+        expect(!store.fillAtTop, "fill at top is off by default")
+        store.fillAtTop = true
+        expect(store.fillAtTop, "fill at top round trip")
         store.defaults.set(Data("x".utf8), forKey: "sets")
         expect(store.loadSets() == GridSet.defaults, "corrupt list → defaults")
 

@@ -7,7 +7,8 @@ import os
 ///
 /// Performance: without an active grid there is no monitor (0 % CPU). With a grid only global mouse/key monitors run;
 /// at most one accessibility query for the window per drag, then a position comparison at most every 50 ms
-/// and only while the key is held. The overlay is redrawn only when the zone changes.
+/// and only while the key is held (or, with "Fill Screen at Top" on, during any window drag, so the top strip works
+/// without the key). The overlay is redrawn only when the zone changes.
 @MainActor
 final class Snapper {
     static let shared = Snapper()
@@ -15,6 +16,7 @@ final class Snapper {
     private var monitors: [Any] = []
     private var grid: GridSet?
     private var key: NSEvent.ModifierFlags = .control
+    private var fillAtTop = false
     private let overlay = ZoneOverlay()
     private let log = Logger(subsystem: "io.github.ape97.snapcontrol", category: "snap")
 
@@ -26,14 +28,17 @@ final class Snapper {
     private var moving = false
     private var lastCheck: TimeInterval = 0
     private var target: CGRect?
+    /// The target is the whole-screen strip: it needs no key, like the macOS behavior it replaces.
+    private var targetFillsScreen = false
 
     private init() {}
 
     var isRunning: Bool { !monitors.isEmpty }
 
-    func start(grid: GridSet, key: SnapKey) {
+    func start(grid: GridSet, key: SnapKey, fillAtTop: Bool) {
         self.grid = grid
         self.key = key.flag
+        self.fillAtTop = fillAtTop
         guard monitors.isEmpty else { return }
         let mask: NSEvent.EventTypeMask = [.leftMouseDown, .leftMouseDragged, .leftMouseUp, .flagsChanged]
         if let m = NSEvent.addGlobalMonitorForEvents(matching: mask, handler: { event in
@@ -60,7 +65,7 @@ final class Snapper {
             if !looked { lookUpWindow() }
             update(held: event.modifierFlags.contains(key))
         case .leftMouseUp:
-            let snap = moving && event.modifierFlags.contains(key) ? target : nil
+            let snap = moving && (event.modifierFlags.contains(key) || targetFillsScreen) ? target : nil
             let window = window
             reset()
             if let snap, let window {
@@ -83,7 +88,9 @@ final class Snapper {
     }
 
     private func update(held: Bool) {
-        guard held, let grid else { return hideOverlay() }
+        guard let grid else { return hideOverlay() }
+        // Without the key only the top strip can react, so skip the work for ordinary drags.
+        guard held || fillAtTop else { return hideOverlay() }
         if !moving {
             // Only once the window really moves is it a window drag (not selecting text or the like).
             let now = ProcessInfo.processInfo.systemUptime
@@ -93,15 +100,31 @@ final class Snapper {
             moving = true
         }
         let point = NSEvent.mouseLocation
-        guard let screen = NSScreen.screens.first(where: { NSMouseInRect(point, $0.frame, false) }) ?? NSScreen.main else { return }
-        let frames = Zones.frames(grid, in: screen.visibleFrame)
+        guard let screen = NSScreen.screens.first(where: { Snapper.edgeInclusive($0.frame, contains: point) }) ?? NSScreen.main else { return }
+        // The strip wins over the grid zones; leaving it falls back to the grid (and to nothing without the key).
+        let visible = screen.visibleFrame
+        if TopFill.contains(point, in: visible, enabled: fillAtTop) {
+            target = visible
+            targetFillsScreen = true
+            overlay.show(on: screen, zones: [visible], highlighted: 0)
+            return
+        }
+        targetFillsScreen = false
+        guard held else { return hideOverlay() }
+        let frames = Zones.frames(grid, in: visible)
         guard let i = Zones.index(of: point, in: frames) else { return }
         target = frames[i]
         overlay.show(on: screen, zones: frames, highlighted: i)
     }
 
+    /// `NSMouseInRect` excludes one edge, and the pointer rests exactly on the top edge when a window is thrown at it.
+    private static func edgeInclusive(_ r: CGRect, contains p: CGPoint) -> Bool {
+        p.x >= r.minX && p.x <= r.maxX && p.y >= r.minY && p.y <= r.maxY
+    }
+
     private func hideOverlay() {
         target = nil
+        targetFillsScreen = false
         overlay.hide()
     }
 

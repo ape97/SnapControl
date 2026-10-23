@@ -1,0 +1,125 @@
+{
+ "screen": [
+  960,
+  600
+ ],
+ "scale": 2,
+ "shots": [
+  {
+   "duration": 1.0,
+   "symbol": "grid-2x2",
+   "cursor": [
+    420,
+    560
+   ],
+   "windows": [
+    {
+     "id": "S",
+     "title": "Safari",
+     "rect": [
+      60,
+      80,
+      400,
+      290
+     ]
+    }
+   ],
+   "caption": "Optional: Fill Screen at Top (Settings)"
+  },
+  {
+   "duration": 0.3,
+   "move": 0.6,
+   "cursor": [
+    380.0,
+    94
+   ],
+   "click": true,
+   "caption": "Drag a window to the middle of the top edge, with any grid"
+  },
+  {
+   "duration": 0.5,
+   "cursor": [
+    380.0,
+    94
+   ]
+  },
+  {
+   "duration": 0.5,
+   "move": 1.0,
+   "cursor": [
+    480,
+    5
+   ],
+   "windows": [
+    {
+     "id": "S",
+     "title": "Safari",
+     "rect": [
+      160.0,
+      -9,
+      400,
+      290
+     ]
+    }
+   ]
+  },
+  {
+   "duration": 1.0,
+   "cursor": [
+    480,
+    5
+   ],
+   "windows": [
+    {
+     "id": "S",
+     "title": "Safari",
+     "rect": [
+      160.0,
+      -9,
+      400,
+      290
+     ]
+    }
+   ],
+   "zones": [
+    [
+     0,
+     37,
+     960,
+     563
+    ]
+   ],
+   "zone": 0,
+   "caption": "The whole screen lights up"
+  },
+  {
+   "duration": 1.8,
+   "cursor": [
+    480,
+    5
+   ],
+   "windows": [
+    {
+     "id": "S",
+     "title": "Safari",
+     "rect": [
+      0,
+      37,
+      960,
+      563
+     ]
+    }
+   ],
+   "caption": "Release: the window fills the screen"
+  },
+  {
+   "duration": 1.2,
+   "move": 0.5,
+   "cursor": [
+    420,
+    560
+   ],
+   "caption": "Snap Control: like macOS, with any grid"
+  }
+ ]
+}
