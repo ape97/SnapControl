@@ -16,5 +16,7 @@ Append new lines at the bottom and keep the format exactly (the "Platform now" v
   Restart goes through the launchd service `gui/<uid>/com.apple.WindowManager.agent` (KeepAlive; fallback: kill the process),
   start time via `sysctl` `KERN_PROC_PID`. If WindowManager reads the values live on some day, the restart becomes unnecessary.
 - **Signing**: builds are ad-hoc signed by default. If you sign with your own certificate via `Config/Local.xcconfig`, it expires; `scripts/status.sh` shows when, then renew it in Xcode.
+- **GitHub releases API** (`App/UpdateCheck.swift`), only while Check for Updates is on: `GET api.github.com/repos/ape97/SnapControl/releases/latest`,
+  reads `tag_name` and `html_url`, ignores drafts and pre-releases. If GitHub changes this, only the update notice stops working.
 
 tested: macOS=27.0.1 (26A434) Xcode=27.0 SDK=27.0 date=2026-10-18
