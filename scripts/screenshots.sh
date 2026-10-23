@@ -6,7 +6,7 @@ cd "${0:A:h}/.."
 BIN=SnapControl
 COLORS=(F38CC1 9D1F5E)   # approximates the icon gradient, see scripts/icon.swift
 # page:snapshot arguments (the first page also provides the menu bar icon)
-PAGES=("main:" "off:--off" "settings:--settings" "editor:--editor" "editor-custom:--editor --editor-custom")
+PAGES=("main:" "off:--off" "settings:--settings" "editor:--editor" "editor-custom:--editor --editor-custom" "update:--update 1.7.0")
 # Extra states only the animations use (rendered, not composed): another grid active.
 EXTRA=("grid-2x2:--grid 2x2" "grid-custom:--grid custom")
 

@@ -43,6 +43,8 @@ With **Fill Screen at Top** switched on (Settings), dragging a window to the mid
 - **Snap by dragging**: drag a window and hold the key, and all zones of the active grid appear in the accent color with the zone under the pointer highlighted. Release the mouse and the window fills exactly that zone (per display, excluding menu bar and Dock).
 - **Fill Screen at Top** (optional, off by default): drag a window to the middle of the top edge (outer 15 % on each side excluded) and release to fill the whole usable screen, with any grid and without the snap key.
 - **Your key**: Control (default), Option, Command or Shift.
+- **Update notice** (optional, off by default): once a day the app looks up the latest release on GitHub and shows
+  "Version X available" in the menu, with **Download** (opens the release page) and **Skip**.
 - **No clash with macOS**: while a grid is active, the built-in macOS window snapping is switched off, because it intercepts the Option key. The previous values are saved and restored when you switch the grid off or quit.
 
 ## Screenshots
@@ -60,6 +62,10 @@ With **Fill Screen at Top** switched on (Settings), dragging a window to the mid
   <tr>
     <td align="center"><img src="docs/images/editor-dark.png" width="360"><br>Editor: equal grid with columns and rows</td>
     <td align="center"><img src="docs/images/editor-custom-dark.png" width="360"><br>Editor: custom layout with rows of different height</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="docs/images/update-dark.png" width="360"><br>Update notice in the menu</td>
+    <td></td>
   </tr>
 </table>
 
@@ -83,7 +89,9 @@ To uninstall, switch the active grid off (this restores the macOS snapping value
 
 - Click the menu bar item and pick a grid from **Saved Grids** to activate it; click the active grid again to switch it off.
 - With a grid active, drag a window, hold the snap key (Control by default), move the pointer over a zone and release the mouse.
-- Settings (gear icon): edit, reorder and add grids, choose the snap key, check the Accessibility permission, switch on **Fill Screen at Top** and **Open at Login**.
+- Settings (gear icon): edit, reorder and add grids, choose the snap key, check the Accessibility permission, switch on **Fill Screen at Top**, **Check for Updates** and **Open at Login**.
+- **Updates**: with **Check for Updates** on, a new version appears in the menu. **Download** opens the release page; replace the
+  app in `/Applications` with the new one. Your settings and the Accessibility permission stay.
 
 ## Build from source
 
@@ -108,7 +116,9 @@ No Apple developer account is needed. Project layout, scripts, signing, screensh
   preferences (edge-drag tiling and the Option accelerator) and restarts the WindowManager service with `launchctl`. The
   original values are restored when the grid is switched off or the app quits. No administrator rights are needed.
 
-Everything stays on your Mac: no network access, no telemetry. The only stored data are your grids, the chosen key and a
+Everything stays on your Mac, no telemetry. The only network access is the optional update check (off by default): once a
+day one request to `api.github.com` for the latest release number of this repository. Nothing about you or your Mac is sent.
+The only stored data are your grids, the chosen key and a
 backup of the macOS snapping values in the app's user defaults.
 
 ## AI-assisted development

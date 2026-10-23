@@ -73,6 +73,8 @@ struct SettingsPage: View {
                 SettingNote("Drag a window to the middle of the top edge and release to fill the whole screen, with any grid and without the snap key.")
             }
 
+            UpdateSettings()
+
             Module {
                 HStack {
                     SettingLabel(symbol: "power", title: "Open at Login", tint: .green)

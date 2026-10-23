@@ -44,6 +44,7 @@ struct MenuView: View {
         }
         .padding(10)
         .frame(width: 380)
+        .onAppear { UpdateCheck.shared.checkIfDue() }
     }
 
     private func go(_ next: Page) {
@@ -58,6 +59,7 @@ struct MainPage: View {
     var body: some View {
         VStack(spacing: 8) {
             StatusModule()
+            UpdateNotice()
             SetsModule()
         }
     }
@@ -202,13 +204,14 @@ struct GridGlyph: View {
     }
 }
 
-/// Footer as in all apps: name on the left, Settings and Quit on the right.
+/// Footer as in all apps: app icon (settings page only) and name on the left, Settings and Quit on the right.
 struct FooterBar: View {
     let settingsActive: Bool
     let toggleSettings: () -> Void
 
     var body: some View {
         HStack(spacing: 6) {
+            if settingsActive { AppIcon(size: 16) }
             Text("Snap Control")
                 .font(.system(size: 10.5, weight: .medium))
                 .foregroundStyle(.tertiary)

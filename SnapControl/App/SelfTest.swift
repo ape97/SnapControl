@@ -195,6 +195,7 @@ enum SelfTest {
 
         report["accessibility"] = WindowAX.isTrusted
 
+        failures += UpdateCheck.selfTest()
         report["ok"] = failures.isEmpty
         report["failures"] = failures
         if let data = try? JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]) {
